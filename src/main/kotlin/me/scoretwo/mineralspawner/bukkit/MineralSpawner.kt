@@ -1,5 +1,6 @@
 package me.scoretwo.mineralspawner.bukkit
 
+import com.alibaba.fastjson.JSON
 import me.scoretwo.mineralspawner.bukkit.command.Commands
 import me.scoretwo.mineralspawner.bukkit.listener.BlockListeners
 import org.bukkit.Bukkit
@@ -8,6 +9,12 @@ import org.bukkit.command.CommandMap
 import org.bukkit.command.SimpleCommandMap
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.plugin.java.JavaPlugin
+import org.yaml.snakeyaml.Yaml
+import com.alibaba.fastjson.JSONObject
+import org.apache.commons.io.FileUtils
+import java.io.File
+import java.io.FileInputStream
+import java.nio.charset.StandardCharsets
 
 class MineralSpawner : JavaPlugin() {
 
@@ -15,6 +22,8 @@ class MineralSpawner : JavaPlugin() {
         instance = this
 
         saveDefaultConfig()
+
+        onReload()
 
         Bukkit.getPluginManager().registerEvents(BlockListeners(), this)
 
@@ -26,34 +35,16 @@ class MineralSpawner : JavaPlugin() {
 
         fun onReload() {
             OreSpawns.groups.clear()
-            instance.reloadConfig()
-            for (group in instance.config.getList("groups")!!) {
-                if (group !is ConfigurationSection) continue
-                OreSpawns(group)
+            val yaml = Yaml()
+
+            val json = JSON.parseObject(JSONObject.toJSONString(yaml.load(FileInputStream(File(instance.dataFolder,"config.yml")))))
+
+            for (array in json.getJSONArray("groups")) {
+                if (array !is JSONObject) continue
+                OreSpawns(array)
             }
         }
 
-        fun replaceOre(world : World) : Any {
-            for (os in OreSpawns.groups) {
-                if (!os.worlds.contains(world.name)) continue
-
-                var total = 0
-                os.oresses.values.forEach{i -> total += i}
-
-                for (i in 0..os.oresses.keys.size) {
-                    if (i == os.oresses.keys.size) {
-                        return os.oresses.keys.toList()[i]
-                    }
-
-                    if (os.oresses[os.oresses.keys.toList()[i]]?.plus(os.oresses[os.oresses.keys.toList()[i + 1]]!!) ?: 0 > (0..total).random()) {
-                        return os.oresses.keys.toList()[i]
-                    }
-                }
-
-            }
-
-            return false
-        }
 
         fun getCommandMap() : CommandMap {
             return Bukkit.getServer().javaClass.getDeclaredMethod("getCommandMap").invoke(Bukkit.getServer()) as SimpleCommandMap

@@ -8,9 +8,13 @@ import java.util.*
 class Commands : Command("MineralSpawner","", "/ms", listOf("ms")) {
 
     override fun execute(sender: CommandSender, label: String, args: Array<out String>): Boolean {
-
+        if (!sender.hasPermission("MineralSpawner.admin")) {
+            sender.sendMessage("§c权限不足.")
+            return true
+        }
         if (args.isEmpty()) {
             onHelp(sender, label)
+            return true
         }
 
         when(args[0]) {

@@ -1,6 +1,10 @@
-name: ${project.name}
+name: MineralSpawner
 version: ${project.version}
 main: me.scoretwo.mineralspawner.bukkit.MineralSpawner
 author: Score2
-depend:
+api-version: 1.13
+softdepend:
   - KotlinAPI
+permissions:
+  mineralspawner.admin:
+    default: op
