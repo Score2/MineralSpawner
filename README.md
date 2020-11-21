@@ -26,7 +26,7 @@
 ***
 
 ##### Images | 图片:
-<img src="http://mc3.roselle.vip:602/plugins/mineralspawner/images/1.jpg" width="1024" height="640"/>
+<img src="http://mc3.roselle.vip:602/plugins/mineralspawner/images/1.jpg"/>
 
 
 ##### Config | 配置文件:
