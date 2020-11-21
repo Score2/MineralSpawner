@@ -1,9 +1,9 @@
 ### MineralSpawner *-* 矿物产生者
-<img src="https://img.shields.io/github/license/Score2/MineralSpawner?color=blue&style=for-the-badge">
-<img src="https://img.shields.io/github/downloads/Score2/MineralSpawner/total?color=green&style=for-the-badge">
-<img src="https://img.shields.io/github/v/release/Score2/MineralSpawner?color=purple&style=for-the-badge">
-<img src="https://img.shields.io/github/issues/Score2/MineralSpawner?style=for-the-badge">
-<img src="https://img.shields.io/github/issues-pr/Score2/MineralSpawner?style=for-the-badge">
+![](https://img.shields.io/github/license/Score2/MineralSpawner?color=blue&style=for-the-badge)
+![](https://img.shields.io/github/downloads/Score2/MineralSpawner/total?color=green&style=for-the-badge)
+![](https://img.shields.io/github/v/release/Score2/MineralSpawner?color=purple&style=for-the-badge)
+![](https://img.shields.io/github/issues/Score2/MineralSpawner?style=for-the-badge)
+![](https://img.shields.io/github/issues-pr/Score2/MineralSpawner?style=for-the-badge)
 
 ***
 > The plugin also needs to install [KotlinAPI](https://www.mcbbs.net/thread-1080136-1-1.html) to run normally.
