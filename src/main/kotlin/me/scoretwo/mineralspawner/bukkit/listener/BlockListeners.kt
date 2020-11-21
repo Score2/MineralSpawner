@@ -2,21 +2,21 @@ package me.scoretwo.mineralspawner.bukkit.listener
 
 import me.scoretwo.mineralspawner.bukkit.MineralSpawner
 import me.scoretwo.mineralspawner.bukkit.OreSpawns
-import org.bukkit.Bukkit
-import org.bukkit.Material
-import org.bukkit.Sound
-import org.bukkit.World
+import me.scoretwo.utils.configuration.patchs.getLowerCaseNode
+import org.bukkit.*
 import org.bukkit.block.BlockFace
 import org.bukkit.block.data.Waterlogged
-import org.bukkit.entity.EntityType
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockFromToEvent
+import kotlin.math.sqrt
+
 
 class BlockListeners : Listener {
 
     @EventHandler
-    fun onExecute(e : BlockFromToEvent) {
+    fun onExecute(e: BlockFromToEvent) {
         val toBlock = e.toBlock
         val block = e.block
         val candidate = replaceOre(toBlock.world)
@@ -69,19 +69,44 @@ class BlockListeners : Listener {
             e.isCancelled = true
 
             e.toBlock.type = candidate as Material
-            e.toBlock.world.playSound(e.toBlock.location, Sound.ENTITY_ITEM_PICKUP, 1.0.toFloat(), "0.${(5..9).random()}".toFloat())
+
+            val stringSound = MineralSpawner.parsePlaceholder(
+                    getLocationNearPlayer(e.toBlock.location)!!,
+                    MineralSpawner.config.getString(MineralSpawner.config.getLowerCaseNode("settings.spawn-sound"))
+            ).split("-").toMutableList()
+
+            val sound = Sound.valueOf(stringSound[0])
+            val volume = stringSound[1].toFloat()
+            val pitch = stringSound[2].toFloat()
+
+            e.toBlock.world.playSound(e.toBlock.location, sound, volume, pitch)
+//            e.toBlock.world.playSound(e.toBlock.location, Sound.ENTITY_ITEM_PICKUP, 1.0.toFloat(), "0.${(5..9).random()}".toFloat())
         }
 
     }
 
-    fun replaceOre(world : World) : Any {
+    fun getLocationNearPlayer(location: Location): Player? {
+        var result: Player? = null
+        var lastDistance: Double = Double.MAX_VALUE
+        for (p in location.world!!.players) {
+            val distance: Double = location.distanceSquared(p.location)
+            if (distance < sqrt(lastDistance)) {
+                lastDistance = distance
+                result = p
+            }
+        }
+
+        return result
+    }
+
+    fun replaceOre(world: World) : Any {
         for (os in OreSpawns.groups) {
             if (!os.worlds.contains(world.name)) {
                 continue
             }
 
             var total = 0
-            os.oresses.values.forEach{i -> total += i}
+            os.oresses.values.forEach{ i -> total += i}
             val rd = (0..total).random()
             var add = 0
 

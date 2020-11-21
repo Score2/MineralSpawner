@@ -1,3 +1,9 @@
+settings:
+  # 产生矿物时播放的音效, 支持 PlaceholderAPI 实现随机音调
+  # 格式: 声音名称-音量-音调
+  spawn-sound: 'ENTITY_ITEM_PICKUP-1.0-1.0'
+
+
 groups:
   - spawns:
       - 'COBBLESTONE:60'

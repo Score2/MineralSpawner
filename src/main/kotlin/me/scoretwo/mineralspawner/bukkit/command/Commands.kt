@@ -3,7 +3,6 @@ package me.scoretwo.mineralspawner.bukkit.command
 import me.scoretwo.mineralspawner.bukkit.MineralSpawner
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import java.util.*
 
 class Commands : Command("MineralSpawner","", "/ms", listOf("ms")) {
 
@@ -19,7 +18,7 @@ class Commands : Command("MineralSpawner","", "/ms", listOf("ms")) {
 
         when(args[0]) {
             "reload" -> {
-                MineralSpawner.onReload()
+                MineralSpawner.reload()
                 sender.sendMessage("§7[MineralSpawner] §2配置文件成功重新载入!")
             }
         }

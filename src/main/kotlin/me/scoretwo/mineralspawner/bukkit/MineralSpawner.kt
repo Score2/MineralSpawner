@@ -1,20 +1,20 @@
 package me.scoretwo.mineralspawner.bukkit
 
-import com.alibaba.fastjson.JSON
 import me.scoretwo.mineralspawner.bukkit.command.Commands
+import me.scoretwo.mineralspawner.bukkit.hook.PlaceholderAPIHook
 import me.scoretwo.mineralspawner.bukkit.listener.BlockListeners
 import org.bukkit.Bukkit
-import org.bukkit.World
 import org.bukkit.command.CommandMap
 import org.bukkit.command.SimpleCommandMap
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.plugin.java.JavaPlugin
 import org.yaml.snakeyaml.Yaml
-import com.alibaba.fastjson.JSONObject
-import org.apache.commons.io.FileUtils
+import me.scoretwo.utils.configuration.file.YamlConfiguration
+import me.scoretwo.utils.configuration.patchs.getConfigurationSectionList
+import me.scoretwo.utils.configuration.patchs.getLowerCaseNode
+import me.scoretwo.utils.configuration.patchs.loadConfiguration
+import org.bukkit.entity.Player
 import java.io.File
 import java.io.FileInputStream
-import java.nio.charset.StandardCharsets
 
 class MineralSpawner : JavaPlugin() {
 
@@ -23,7 +23,7 @@ class MineralSpawner : JavaPlugin() {
 
         saveDefaultConfig()
 
-        onReload()
+        reload()
 
         Bukkit.getPluginManager().registerEvents(BlockListeners(), this)
 
@@ -32,19 +32,32 @@ class MineralSpawner : JavaPlugin() {
 
     companion object{
         lateinit var instance : MineralSpawner
+        lateinit var config: YamlConfiguration
+        lateinit var file: File
 
-        fun onReload() {
+        fun reload() {
             OreSpawns.groups.clear()
-            val yaml = Yaml()
+            file = File(instance.dataFolder,"config.yml")
+            config = file.loadConfiguration()
 
-            val json = JSON.parseObject(JSONObject.toJSONString(yaml.load(FileInputStream(File(instance.dataFolder,"config.yml")))))
+            if (!config.contains(config.getLowerCaseNode("groups"))) {
+                return
+            }
 
-            for (array in json.getJSONArray("groups")) {
-                if (array !is JSONObject) continue
-                OreSpawns(array)
+            for (section in config.getConfigurationSectionList(config.getLowerCaseNode("groups"))!!) {
+                OreSpawns(
+                        section.getStringList(section.getLowerCaseNode("spawns")),
+                        section.getStringList(section.getLowerCaseNode("enabled-world"))
+                )
             }
         }
 
+        fun parsePlaceholder(player: Player, string: String): String {
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                return PlaceholderAPIHook.parsePlaceholder(player, string)
+            }
+            return string
+        }
 
         fun getCommandMap() : CommandMap {
             return Bukkit.getServer().javaClass.getDeclaredMethod("getCommandMap").invoke(Bukkit.getServer()) as SimpleCommandMap
