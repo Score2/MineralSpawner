@@ -1,6 +1,6 @@
-name: MineralSpawner
-version: ${project.version}
-main: me.scoretwo.mineralspawner.bukkit.MineralSpawner
+name: ${name}
+version: ${version}
+main: ${main}
 author: Score2
 api-version: 1.13
 softdepend:

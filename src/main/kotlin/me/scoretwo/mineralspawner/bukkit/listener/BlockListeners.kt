@@ -12,7 +12,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockFromToEvent
 import kotlin.math.sqrt
 
-
 class BlockListeners : Listener {
 
     @EventHandler

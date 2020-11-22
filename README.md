@@ -6,9 +6,9 @@
 ![](https://img.shields.io/github/issues-pr/Score2/MineralSpawner?style=for-the-badge)
 
 ***
-> The plugin also needs to install [KotlinAPI](https://www.mcbbs.net/thread-1080136-1-1.html) to run normally.
+> Starting from v0.12, there is no need to install [KotlinAPI](https://www.mcbbs.net/thread-1080136-1-1.html).
 >
-> 该插件同时需要安装 [KotlinAPI](https://www.mcbbs.net/thread-1080136-1-1.html) 才能正常运行.
+> 自 v0.12 版本开始, 无需再安装 [KotlinAPI](https://www.mcbbs.net/thread-1080136-1-1.html).
 ##### Features | 特性:
 * Support 1.16 nether ores spawner (blue ice above any level junction block of magma, soul soil below).
 * Play sounds when ores are spawned (the sound can be randomized through the PlaceholderAPI grammar).

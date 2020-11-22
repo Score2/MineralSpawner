@@ -1,6 +1,5 @@
 package me.scoretwo.mineralspawner.bukkit
 
-import me.scoretwo.utils.configuration.ConfigurationSection
 import org.bukkit.Material
 import java.util.*
 import kotlin.collections.ArrayList
